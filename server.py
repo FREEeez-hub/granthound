@@ -9,6 +9,8 @@ PORT = int(os.environ.get('PORT', 10000))
 DB_PATH = 'granthound.db'
 GMAIL_USER = 'noahlatour77@gmail.com'
 GMAIL_PASS = 'bvtciemwwxonfcmi'
+BREVO_LOGIN = os.environ.get('BREVO_LOGIN', 'af3e1d001@smtp-brevo.com')
+BREVO_KEY = os.environ.get('BREVO_KEY', '')
 
 def init_db():
     con = sqlite3.connect(DB_PATH)
@@ -43,18 +45,23 @@ def save_client(data):
 def send_email(to, subject, body):
     def _send():
         try:
+            import smtplib
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
             msg = MIMEMultipart('alternative')
             msg['Subject'] = subject
-            msg['From'] = GMAIL_USER
+            msg['From'] = 'noahlatour77@gmail.com'
             msg['To'] = to
             msg.attach(MIMEText(body, 'html'))
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as s:
-                s.login(GMAIL_USER, GMAIL_PASS)
-                s.sendmail(GMAIL_USER, to, msg.as_string())
-            print(f'[EMAIL OK] {to}')
+            with smtplib.SMTP('smtp-relay.brevo.com', 587) as s:
+                s.starttls()
+                s.login(BREVO_LOGIN, BREVO_KEY)
+                s.sendmail('noahlatour77@gmail.com', to, msg.as_string())
+            print('[EMAIL OK]', to)
         except Exception as e:
-            print(f'[EMAIL ERROR] {e}')
-    pass  # email desactive
+            print('[EMAIL ERROR]', e)
+    import threading
+    threading.Thread(target=_send, daemon=True).start()
 
 CSS = '''<style>
 *{margin:0;padding:0;box-sizing:border-box}
