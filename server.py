@@ -54,7 +54,7 @@ def send_email(to, subject, body):
             print(f'[EMAIL OK] {to}')
         except Exception as e:
             print(f'[EMAIL ERROR] {e}')
-    threading.Thread(target=_send, daemon=True).start()
+    pass  # email desactive
 
 CSS = '''<style>
 *{margin:0;padding:0;box-sizing:border-box}
