@@ -1,4 +1,4 @@
-import os, sqlite3, smtplib
+import os, sqlite3, smtplib, threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 from email.mime.text import MIMEText
@@ -40,14 +40,21 @@ def save_client(data):
     except sqlite3.IntegrityError: return False, 'exists'
     finally: con.close()
 
-def _send_email_sync(to, subject, body):\n    threading.Thread(target=_send_email_sync_real, args=(to, subject, body), daemon=True).start()\n\ndef _send_email_sync_real(to, subject, body):
-    try:
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = subject; msg['From'] = GMAIL_USER; msg['To'] = to
-        msg.attach(MIMEText(body, 'html'))
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as s:
-            s.login(GMAIL_USER, GMAIL_PASS); s.sendmail(GMAIL_USER, to, msg.as_string())
-    except Exception as e: print(f'[EMAIL] {e}')
+def send_email(to, subject, body):
+    def _send():
+        try:
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = GMAIL_USER
+            msg['To'] = to
+            msg.attach(MIMEText(body, 'html'))
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15) as s:
+                s.login(GMAIL_USER, GMAIL_PASS)
+                s.sendmail(GMAIL_USER, to, msg.as_string())
+            print(f'[EMAIL OK] {to}')
+        except Exception as e:
+            print(f'[EMAIL ERROR] {e}')
+    threading.Thread(target=_send, daemon=True).start()
 
 CSS = '''<style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -109,39 +116,35 @@ def page_home(alert=''):
 <link href="https://fonts.bunny.net/css?family=sora:700,800|inter:400,500,600" rel="stylesheet">
 {CSS}</head><body>
 <nav><a class="logo" href="/">Grant<span>Hound</span></a>
-<div class="nav-links"><a href="/apropos">À propos</a><a href="/contact">Contact</a><a href="/#inscription">S'inscrire</a></div></nav>
-
+<div class="nav-links"><a href="/apropos">A propos</a><a href="/contact">Contact</a><a href="/#inscription">S inscrire</a></div></nav>
 <div class="hero">
   <h1>Trouvez les subsides qui<br><em>financent votre ASBL</em></h1>
-  <p>GrantHound surveille automatiquement 297+ sources de financement wallonnes et vous alerte uniquement sur les aides qui correspondent à votre profil.</p>
-  <a href="/#inscription" class="btn">S'inscrire gratuitement</a>
+  <p>GrantHound surveille automatiquement 297+ sources de financement wallonnes et vous alerte uniquement sur les aides qui correspondent a votre profil.</p>
+  <a href="/#inscription" class="btn">S inscrire gratuitement</a>
   <a href="/apropos" class="btn btn-outline">En savoir plus</a>
 </div>
-
 <div class="ticker"><div class="ticker-inner">
-<span>MIDAS Wallonie</span><span>FWB</span><span>Province de Liège</span><span>Province de Luxembourg</span>
+<span>MIDAS Wallonie</span><span>FWB</span><span>Province de Liege</span><span>Province de Luxembourg</span>
 <span>Fondation Roi Baudouin</span><span>Loterie Nationale</span><span>Interreg</span><span>CERV Europe</span>
-<span>Erasmus+</span><span>LIFE</span><span>MIDAS Wallonie</span><span>FWB</span><span>Province de Liège</span>
+<span>Erasmus+</span><span>LIFE</span><span>MIDAS Wallonie</span><span>FWB</span><span>Province de Liege</span>
 <span>Province de Luxembourg</span><span>Fondation Roi Baudouin</span><span>Loterie Nationale</span>
 <span>Interreg</span><span>CERV Europe</span><span>Erasmus+</span><span>LIFE</span>
 </div></div>
-
 <div class="section">
   <p class="section-tag">Pourquoi GrantHound</p>
-  <h2>Ne manquez plus aucun subside adapté à votre structure</h2>
-  <p style="color:#555;line-height:1.8">La veille manuelle des subsides est chronophage. GrantHound automatise tout — détection, filtrage par profil, alertes et suivi des délais.</p>
+  <h2>Ne manquez plus aucun subside adapte a votre structure</h2>
+  <p style="color:#555;line-height:1.8">La veille manuelle des subsides est chronophage. GrantHound automatise tout.</p>
   <div class="cards">
-    <div class="card"><h3>🔍 Détection automatique</h3><p>297+ sources officielles scrutées en continu — MIDAS, FWB, provinces, Europe.</p></div>
-    <div class="card"><h3>🎯 Matching IA</h3><p>Gemini 2.5 Flash analyse votre profil et ne vous envoie que les aides vraiment pertinentes.</p></div>
-    <div class="card"><h3>🔔 Alertes hebdo</h3><p>Chaque lundi matin, un rapport clair avec les aides ouvertes qui vous concernent.</p></div>
-    <div class="card"><h3>🏆 Aides méconnues</h3><p>On sépare les aides connues (APE, Impulsion) des aides que vous ne connaissiez pas encore.</p></div>
+    <div class="card"><h3>Detection automatique</h3><p>297+ sources officielles scrutees en continu.</p></div>
+    <div class="card"><h3>Matching IA</h3><p>Gemini 2.5 Flash analyse votre profil et ne vous envoie que les aides pertinentes.</p></div>
+    <div class="card"><h3>Alertes hebdo</h3><p>Chaque lundi matin, un rapport clair avec les aides ouvertes.</p></div>
+    <div class="card"><h3>Aides meconnues</h3><p>On separe les aides connues des aides que vous ne connaissiez pas encore.</p></div>
   </div>
 </div>
-
 <div class="form-wrap" id="inscription">
 <div class="form-inner">
-  <h2>Créez votre profil subsides</h2>
-  <p class="sub">Inscription gratuite · Pas de carte · Premier rapport sous 7 jours</p>
+  <h2>Creez votre profil subsides</h2>
+  <p class="sub">Inscription gratuite - Pas de carte - Premier rapport sous 7 jours</p>
   {alert}
   <form method="POST" action="/inscrire">
   <div class="form-grid">
@@ -149,29 +152,29 @@ def page_home(alert=''):
       <input type="text" name="nom" placeholder="Ex : ASBL Horizon Vert" required></div>
     <div class="field"><label>Type *</label>
       <select name="type" required><option value="" disabled selected>Choisissez...</option>
-      <option>ASBL</option><option>Indépendant</option><option>PME</option><option>Autre</option></select></div>
+      <option>ASBL</option><option>Independant</option><option>PME</option><option>Autre</option></select></div>
     <div class="field"><label>Secteur *</label>
       <select name="secteur" required><option value="" disabled selected>Choisissez...</option>
-      <option>Culture &amp; Arts</option><option>Jeunesse</option><option>Environnement</option>
+      <option>Culture et Arts</option><option>Jeunesse</option><option>Environnement</option>
       <option>Social</option><option>Tourisme</option><option>Formation</option>
       <option>Agriculture</option><option>Autre</option></select></div>
     <div class="field"><label>Province *</label>
       <select name="province" required><option value="" disabled selected>Choisissez...</option>
-      <option>Province de Liège</option><option>Province de Luxembourg</option>
+      <option>Province de Liege</option><option>Province de Luxembourg</option>
       <option>Province de Namur</option><option>Province du Hainaut</option>
       <option>Province du Brabant wallon</option><option>Bruxelles</option></select></div>
-    <div class="field"><label>Employés</label>
+    <div class="field"><label>Employes</label>
       <input type="number" name="employes" min="0" placeholder="Ex : 5"></div>
     <div class="field"><label>Budget annuel</label>
       <select name="budget_annuel"><option value="" disabled selected>Choisissez...</option>
-      <option>Moins de 50.000€</option><option>50.000€ – 200.000€</option>
-      <option>200.000€ – 500.000€</option><option>Plus de 500.000€</option></select></div>
-    <div class="field"><label>Année de création</label>
+      <option>Moins de 50000 euros</option><option>50000 a 200000 euros</option>
+      <option>200000 a 500000 euros</option><option>Plus de 500000 euros</option></select></div>
+    <div class="field"><label>Annee de creation</label>
       <input type="number" name="annee_creation" min="1900" max="2026" placeholder="Ex : 2005"></div>
     <div class="field"><label>Public cible</label>
       <select name="public_cible"><option value="" disabled selected>Choisissez...</option>
-      <option>Grand public</option><option>Jeunes</option><option>Personnes handicapées</option>
-      <option>Demandeurs d'emploi</option><option>Artistes</option>
+      <option>Grand public</option><option>Jeunes</option><option>Personnes handicapees</option>
+      <option>Demandeurs d emploi</option><option>Artistes</option>
       <option>Agriculteurs</option><option>Entreprises</option><option>Autre</option></select></div>
     <div class="field full"><label>Projets en cours</label>
       <div class="checks">
@@ -185,76 +188,67 @@ def page_home(alert=''):
     <div class="field full">
       <label style="display:flex;align-items:center;gap:10px;font-weight:400;cursor:pointer">
         <input type="checkbox" name="cofinancement" value="1">
-        Je cherche des fonds complémentaires (cofinancement)
+        Je cherche des fonds complementaires (cofinancement)
       </label></div>
-    <div class="field"><label>Prénom *</label>
+    <div class="field"><label>Prenom *</label>
       <input type="text" name="contact" placeholder="Ex : Marie" required></div>
     <div class="field"><label>Email *</label>
       <input type="email" name="email" placeholder="marie@structure.be" required></div>
   </div>
   <div class="form-submit">
-    <button type="submit" class="btn" style="font-size:1.05rem;padding:16px 40px">Créer mon profil →</button>
-    <p class="form-note">✓ Accès gratuit pendant le pilote · Pas de carte · Désinscription en 1 clic</p>
+    <button type="submit" class="btn" style="font-size:1.05rem;padding:16px 40px">Creer mon profil</button>
+    <p class="form-note">Acces gratuit pendant le pilote - Pas de carte - Desinscription en 1 clic</p>
   </div>
   </form>
 </div></div>
-
 <footer>
   <p style="font-family:Sora,sans-serif;color:#fff;font-size:1.1rem;font-weight:700;margin-bottom:10px">Grant<span style="color:#2D7A4F">Hound</span></p>
   <p>Veille automatique de subsides pour ASBL wallonnes</p>
-  <p style="margin-top:12px"><a href="/apropos">À propos</a> &bull; <a href="/contact">Contact</a></p>
-  <p style="margin-top:16px;font-size:.78rem">© {datetime.now().year} GrantHound — Wallonie, Belgique</p>
-</footer>
-</body></html>'''
+  <p style="margin-top:12px"><a href="/apropos">A propos</a> - <a href="/contact">Contact</a></p>
+</footer></body></html>'''
 
 def page_apropos():
     return f'''<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>À propos — GrantHound</title>
+<title>A propos - GrantHound</title>
 <link href="https://fonts.bunny.net/css?family=sora:700,800|inter:400,500,600" rel="stylesheet">
 {CSS}</head><body>
 <nav><a class="logo" href="/">Grant<span>Hound</span></a>
-<div class="nav-links"><a href="/">Accueil</a><a href="/contact">Contact</a><a href="/#inscription">S'inscrire</a></div></nav>
+<div class="nav-links"><a href="/">Accueil</a><a href="/contact">Contact</a><a href="/#inscription">S inscrire</a></div></nav>
 <div class="hero" style="padding:80px 5%">
-  <h1>À propos de <em>GrantHound</em></h1>
-  <p>Développé par Noah Latour, 17 ans, Vielsalm — pour connecter l'argent public avec ceux qui en ont besoin.</p>
+  <h1>A propos de <em>GrantHound</em></h1>
+  <p>Developpe par Noah Latour, 17 ans, Vielsalm.</p>
 </div>
 <div class="section">
-  <p class="section-tag">Notre mission</p>
-  <h2>Démocratiser l'accès aux financements publics</h2>
-  <p style="color:#555;line-height:1.8;margin-bottom:24px">Des milliers d'euros de subsides wallons ne sont jamais réclamés chaque année, faute de temps pour surveiller les appels à projets et les délais. GrantHound automatise cette veille pour que les ASBL puissent se concentrer sur leur mission.</p>
   <div class="cards">
-    <div class="card"><h3>297+ aides</h3><p>Sources : MIDAS, FWB, 5 provinces wallonnes, Europe, Fondation Roi Baudouin, Loterie Nationale.</p></div>
-    <div class="card"><h3>IA Gemini 2.5 Flash</h3><p>Chaque aide est analysée en profondeur pour évaluer sa pertinence par rapport à votre profil.</p></div>
-    <div class="card"><h3>Rapport hebdo</h3><p>Chaque lundi : les aides pertinentes, séparées entre connues et inconnues de votre structure.</p></div>
+    <div class="card"><h3>297+ aides</h3><p>MIDAS, FWB, 5 provinces wallonnes, Europe, Fondation Roi Baudouin, Loterie Nationale.</p></div>
+    <div class="card"><h3>IA Gemini 2.5 Flash</h3><p>Chaque aide est analysee pour evaluer sa pertinence par rapport a votre profil.</p></div>
+    <div class="card"><h3>Rapport hebdo</h3><p>Chaque lundi : les aides pertinentes, separees entre connues et inconnues.</p></div>
   </div>
   <div style="margin-top:48px;background:#fff;border-radius:12px;padding:32px;border:1px solid #e8e6e0">
     <h3 style="color:var(--navy);margin-bottom:12px">Contact</h3>
     <p style="color:#555;line-height:1.8">
-      📧 <a href="mailto:noahlatour77@gmail.com" style="color:#2D7A4F">noahlatour77@gmail.com</a><br>
-      📞 0491 63 76 89<br>
-      📍 Vielsalm, Province de Luxembourg, Belgique
+      Email : noahlatour77@gmail.com<br>
+      Tel : 0491 63 76 89<br>
+      Vielsalm, Province de Luxembourg, Belgique
     </p>
   </div>
 </div>
-<footer>
-  <p style="font-family:Sora,sans-serif;color:#fff;font-size:1.1rem;font-weight:700;margin-bottom:10px">Grant<span style="color:#2D7A4F">Hound</span></p>
-  <p><a href="/">Accueil</a> &bull; <a href="/contact">Contact</a></p>
-  <p style="margin-top:16px;font-size:.78rem">© {datetime.now().year} GrantHound</p>
-</footer></body></html>'''
+<footer><p><a href="/">Accueil</a> - <a href="/contact">Contact</a></p></footer>
+</body></html>'''
 
 def page_contact(alert=''):
     return f'''<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contact — GrantHound</title>
+<title>Contact - GrantHound</title>
 <link href="https://fonts.bunny.net/css?family=sora:700,800|inter:400,500,600" rel="stylesheet">
 {CSS}</head><body>
 <nav><a class="logo" href="/">Grant<span>Hound</span></a>
-<div class="nav-links"><a href="/">Accueil</a><a href="/apropos">À propos</a><a href="/#inscription">S'inscrire</a></div></nav>
+<div class="nav-links"><a href="/">Accueil</a><a href="/apropos">A propos</a><a href="/#inscription">S inscrire</a></div></nav>
 <div class="form-wrap" style="padding-top:100px">
 <div class="form-inner">
   <h2 style="color:#fff;margin-bottom:8px">Contactez-nous</h2>
-  <p class="sub">Réponse sous 24h · noahlatour77@gmail.com · 0491 63 76 89</p>
+  <p class="sub">Reponse sous 24h - noahlatour77@gmail.com - 0491 63 76 89</p>
   {alert}
   <form method="POST" action="/message">
   <div class="form-grid">
@@ -265,15 +259,11 @@ def page_contact(alert=''):
       <textarea name="message" rows="6" placeholder="Votre message..." required
         style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;padding:11px 14px;border-radius:8px;font-size:.92rem;font-family:Inter,sans-serif;outline:none;resize:vertical"></textarea></div>
   </div>
-  <div class="form-submit">
-    <button type="submit" class="btn">Envoyer →</button>
-  </div>
+  <div class="form-submit"><button type="submit" class="btn">Envoyer</button></div>
   </form>
 </div></div>
-<footer>
-  <p style="font-family:Sora,sans-serif;color:#fff;font-size:1.1rem;font-weight:700;margin-bottom:10px">Grant<span style="color:#2D7A4F">Hound</span></p>
-  <p><a href="/">Accueil</a> &bull; <a href="/apropos">À propos</a></p>
-</footer></body></html>'''
+<footer><p><a href="/">Accueil</a> - <a href="/apropos">A propos</a></p></footer>
+</body></html>'''
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args): print(f'[{self.address_string()}] {fmt % args}')
@@ -307,23 +297,23 @@ class Handler(BaseHTTPRequestHandler):
             ok, err = save_client(data)
             if ok:
                 send_email(data.get('email',''), 'Bienvenue sur GrantHound !',
-                    f'<p>Bonjour {data.get("contact","")}, votre profil <strong>{data.get("nom","")}</strong> est créé. Vous recevrez votre premier rapport sous 7 jours.</p>')
+                    f'<p>Bonjour {data.get("contact","")}, votre profil <strong>{data.get("nom","")}</strong> est cree.</p>')
                 send_email(GMAIL_USER, f'[GrantHound] Nouvelle inscription : {data.get("nom","")}',
-                    f'<p>Email : {data.get("email","")}</p><p>Province : {data.get("province","")}</p><p>Secteur : {data.get("secteur","")}</p>')
-                self.send_html(page_home('<div class="alert alert-ok">✅ Inscription réussie ! Consultez votre boîte mail.</div>'))
+                    f'<p>Email : {data.get("email","")}</p><p>Province : {data.get("province","")}</p>')
+                self.send_html(page_home('<div class="alert alert-ok">Inscription reussie ! Consultez votre boite mail.</div>'))
             elif err == 'exists':
-                self.send_html(page_home('<div class="alert alert-err">⚠️ Cet email est déjà inscrit.</div>'))
+                self.send_html(page_home('<div class="alert alert-err">Cet email est deja inscrit.</div>'))
             else:
-                self.send_html(page_home('<div class="alert alert-err">❌ Erreur. Réessayez.</div>'))
+                self.send_html(page_home('<div class="alert alert-err">Erreur. Reessayez.</div>'))
 
         elif path == '/message':
             data2 = {k: (v[0] if isinstance(v, list) else v) for k, v in data.items()}
             if all(data2.get(f,'').strip() for f in ['nom','email','sujet','message']):
                 send_email(GMAIL_USER, f'[GrantHound Contact] {data2.get("sujet","")}',
                     f'<p>De : {data2.get("nom","")} ({data2.get("email","")})</p><p>{data2.get("message","")}</p>')
-                self.send_html(page_contact('<div class="alert alert-ok">✅ Message envoyé !</div>'))
+                self.send_html(page_contact('<div class="alert alert-ok">Message envoye !</div>'))
             else:
-                self.send_html(page_contact('<div class="alert alert-err">⚠️ Remplissez tous les champs.</div>'))
+                self.send_html(page_contact('<div class="alert alert-err">Remplissez tous les champs.</div>'))
         else:
             self.send_html('<h1>404</h1>', 404)
 
