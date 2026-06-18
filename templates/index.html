@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrantHound — Veille automatique de subsides pour les ASBL wallonnes</title>
+  <meta name="description" content="GrantHound surveille 220+ sources officielles (MIDAS Wallonie, FWB, provinces, Europe) et vous alerte quand un subside correspond à votre ASBL. Alertes personnalisées, zéro démarche.">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav dark" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L22 22"/></svg>
+        </div>
+        Grant<em>Hound</em>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="/tarifs">Tarifs</a></li>
+        <li><a href="/a-propos">À propos</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="#inscription" class="nav-cta">Commencer gratuitement</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Text -->
+      <div>
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-line"></div>
+          <span>Veille active · Wallonie &amp; Fédération</span>
+        </div>
+        <h1 class="display">
+          Aucun subside<br>
+          wallon ne vous<br>
+          <em>échappera.</em>
+        </h1>
+        <p class="hero-sub">
+          GrantHound surveille en continu 220+ sources officielles — MIDAS Wallonie, FWB, provinces, Europe — et vous alerte dès qu'une aide correspond exactement à votre ASBL.
+        </p>
+        <div class="hero-actions">
+          <a href="#inscription" class="btn btn-amber btn-lg">
+            Démarrer · 14 jours gratuits
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#comment-ca-marche" class="btn btn-outline-cream">Comment ça marche ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <span class="stat-val">220+</span>
+            <div class="stat-lbl">Sources surveillées</div>
+          </div>
+          <div>
+            <span class="stat-val">7</span>
+            <div class="stat-lbl">Secteurs couverts</div>
+          </div>
+          <div>
+            <span class="stat-val">50 k€</span>
+            <div class="stat-lbl">Subside moyen trouvé</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert card mockup -->
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="hero-card-title">Alertes cette semaine</span>
+          <span class="live-dot">En direct</span>
+        </div>
+        <div class="alert-row">
+          <div class="alert-icon">🏛️</div>
+          <div>
+            <div class="alert-name">Fonds Social Européen+</div>
+            <div class="alert-meta">Région wallonne · Clôture dans 18 jours</div>
+          </div>
+          <div class="alert-amount">75 000 €</div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-icon">🌱</div>
+          <div>
+            <div class="alert-name">Fonds Maribel Social</div>
+            <div class="alert-meta">ONSS · Non-marchand · Nouveau</div>
+          </div>
+          <div class="alert-amount">12 400 €</div>
+        </div>
+        <div class="alert-row">
+          <div class="alert-icon">📚</div>
+          <div>
+            <div class="alert-name">Plan Cohésion Sociale</div>
+            <div class="alert-meta">Province de Liège · Clôture 30 juin</div>
+          </div>
+          <div class="alert-amount">28 000 €</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-footer-note">Mis à jour il y a 2h</span>
+          <a href="#inscription">Recevoir les miennes →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Données officielles uniquement
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Mises à jour hebdomadaires
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Alertes personnalisées par profil
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Sans engagement · Annulation facile
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        RGPD conforme · Données en Belgique
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="section" id="comment-ca-marche">
+  <div class="container">
+    <div class="steps-intro">
+      <div class="section-eyebrow"><span>Fonctionnement</span></div>
+      <h2 class="display-md">Quatre étapes,<br>zéro complexité.</h2>
+      <p>De l'inscription à la première alerte subside, tout se configure en moins de dix minutes.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-badge">🎯</div>
+        <h3>Votre profil ASBL</h3>
+        <p>Secteur d'activité, province wallonne, taille de l'organisation, publics cibles. GrantHound construit votre empreinte de financement unique.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-badge">🔍</div>
+        <h3>Scan 220+ sources</h3>
+        <p>Notre moteur parcourt chaque semaine MIDAS Wallonie, FWB, les cinq provinces, les fondations privées, les fonds européens et les communes.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-badge">⚡</div>
+        <h3>Correspondance ciblée</h3>
+        <p>Seuls les subsides pour lesquels votre ASBL est réellement éligible vous remontent. Pas de bruit. Que du signal. Que de l'utile.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-badge">📬</div>
+        <h3>Alerte dans votre boîte</h3>
+        <p>Un email hebdomadaire clair : montants, dates limites, liens directs vers les dossiers. Zéro démarche supplémentaire de votre côté.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE (dark) -->
+<section class="section coverage-section">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="section-eyebrow"><span>Couverture</span></div>
+    <h2 class="display-md" style="max-width:600px;margin-bottom:.875rem">Tous les financements<br>sous surveillance.</h2>
+    <p style="max-width:520px;margin-bottom:0">Des subsides de fonctionnement aux appels à projets européens, GrantHound couvre l'ensemble du paysage de financement non-marchand wallon.</p>
+
+    <div class="coverage-grid">
+      <div class="coverage-group">
+        <h4>Secteurs couverts</h4>
+        <div class="tag-wrap">
+          <span class="tag">Culture &amp; arts</span>
+          <span class="tag">Jeunesse</span>
+          <span class="tag">Environnement</span>
+          <span class="tag">Social &amp; aide</span>
+          <span class="tag">Tourisme</span>
+          <span class="tag">Formation</span>
+          <span class="tag">Agriculture</span>
+          <span class="tag">Sport</span>
+          <span class="tag">Santé</span>
+          <span class="tag">Numérique</span>
+        </div>
+      </div>
+      <div class="coverage-group">
+        <h4>Sources &amp; territoires</h4>
+        <div class="tag-wrap">
+          <span class="tag">MIDAS Wallonie</span>
+          <span class="tag">FWB</span>
+          <span class="tag">Province Liège</span>
+          <span class="tag">Province Luxembourg</span>
+          <span class="tag">Province Namur</span>
+          <span class="tag">Province Hainaut</span>
+          <span class="tag">Brabant wallon</span>
+          <span class="tag">Bruxelles</span>
+          <span class="tag">FSE+</span>
+          <span class="tag">FEDER</span>
+          <span class="tag">Fondations privées</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section class="section" id="tarifs">
+  <div class="container">
+    <div class="pricing-intro">
+      <div class="section-eyebrow" style="justify-content:center"><span>Tarifs</span></div>
+      <h2 class="display-md">Un tarif pour<br>chaque réalité.</h2>
+      <p>Petite ASBL ou fédération coordonnatrice, nous avons une formule adaptée à vos ressources — et à vos ambitions.</p>
+    </div>
+
+    <div class="plan-grid">
+
+      <!-- Veille -->
+      <div class="plan-card">
+        <div class="plan-name">Veille Active</div>
+        <div class="plan-price"><sup>€</sup>19</div>
+        <div class="plan-period">par mois · HTVA</div>
+        <p class="plan-desc">Pour les petites ASBL qui veulent ne rater aucune opportunité sans y passer des heures.</p>
+        <ul class="plan-features">
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Alertes email hebdomadaires
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            1 profil ASBL
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            100+ sources surveillées
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Couverture provinces Wallonie
+          </li>
+          <li class="feat-miss">
+            <span class="feat-no"><svg viewBox="0 0 12 12"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></span>
+            Alertes temps réel
+          </li>
+          <li class="feat-miss">
+            <span class="feat-no"><svg viewBox="0 0 12 12"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></span>
+            Dashboard &amp; export
+          </li>
+        </ul>
+        <a href="/inscription?plan=veille" class="btn btn-outline btn-full">Démarrer</a>
+      </div>
+
+      <!-- Pro (featured) -->
+      <div class="plan-card featured">
+        <div class="plan-badge">⭐ Le plus populaire</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>€</sup>35</div>
+        <div class="plan-period">par mois · HTVA</div>
+        <p class="plan-desc">Pour les ASBL actives qui veulent une veille complète et des alertes immédiates dès qu'un subside correspond.</p>
+        <ul class="plan-features">
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Alertes email en temps réel
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Profils ASBL illimités
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            220+ sources surveillées
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            6 provinces + Bruxelles
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Dashboard interactif
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Export PDF &amp; Excel
+          </li>
+        </ul>
+        <a href="/inscription?plan=pro" class="btn btn-amber btn-full">Choisir Pro</a>
+      </div>
+
+      <!-- Cabinet -->
+      <div class="plan-card">
+        <div class="plan-name">Cabinet</div>
+        <div class="plan-price"><sup>€</sup>89</div>
+        <div class="plan-period">par mois · HTVA</div>
+        <p class="plan-desc">Pour les fédérations et coordinateurs qui gèrent plusieurs ASBL et ont besoin d'analyses avancées.</p>
+        <ul class="plan-features">
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Tout le plan Pro inclus
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Multi-comptes équipe
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Analyses sectorielles avancées
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Accompagnement prioritaire
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            API d'intégration
+          </li>
+          <li>
+            <span class="feat-ok"><svg viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Rapport mensuel personnalisé
+          </li>
+        </ul>
+        <a href="/inscription?plan=cabinet" class="btn btn-outline btn-full">Démarrer</a>
+      </div>
+    </div>
+
+    <p class="pricing-note">Tous les plans incluent 14 jours d'essai gratuit · Sans carte bancaire · Annulation à tout moment</p>
+
+    <!-- ROI note -->
+    <div style="max-width:680px;margin:3rem auto 0;background:var(--mist);border:1px solid var(--line);border-radius:var(--r);padding:1.75rem 2rem;display:flex;gap:1.25rem;align-items:flex-start">
+      <div style="font-size:1.75rem;flex-shrink:0">💡</div>
+      <div>
+        <strong style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;display:block;margin-bottom:.375rem">Pourquoi ça vaut chaque centime</strong>
+        <p style="font-size:.875rem;color:var(--ink-2);line-height:1.7">Un consultant en subsides facture <strong>500€/jour</strong>. Un subside wallon moyen = <strong>5 000 à 50 000 €</strong>. GrantHound fait la veille 7j/7 pour vous — à une fraction du coût. Trouver un seul subside rembourse <strong>plusieurs années</strong> d'abonnement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSCRIPTION FORM -->
+<section class="section form-section" id="inscription">
+  <div class="container">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <div class="section-eyebrow" style="justify-content:center"><span>Inscription</span></div>
+        <h2 class="display-sm">14 jours gratuits,<br>sans carte bancaire.</h2>
+        <p>Renseignez votre profil ci-dessous. Nous vous contactons sous 24h pour activer votre compte.</p>
+      </div>
+
+      <form action="/api/signup" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Votre nom</label>
+            <input type="text" id="name" name="name" placeholder="Marie Dupont" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email professionnel</label>
+            <input type="email" id="email" name="email" placeholder="marie@asbl.be" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="asbl">Nom de votre ASBL</label>
+          <input type="text" id="asbl" name="asbl" placeholder="Association culturelle de Namur" required>
+        </div>
+        <div class="form-group">
+          <label>Formule choisie</label>
+          <div class="plan-choice-grid">
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-veille" value="veille" checked>
+              <label for="plan-veille">
+                <span class="pr-name">Veille Active</span>
+                <span class="pr-price">19 €/mois</span>
+              </label>
+            </div>
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-pro" value="pro">
+              <label for="plan-pro">
+                <span class="pr-name">Pro</span>
+                <span class="pr-price">35 €/mois</span>
+              </label>
+            </div>
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-cabinet" value="cabinet">
+              <label for="plan-cabinet">
+                <span class="pr-name">Cabinet</span>
+                <span class="pr-price">89 €/mois</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-amber btn-full btn-lg">
+          Démarrer mon essai gratuit
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p style="text-align:center;font-size:.8rem;color:var(--ink-3);margin-top:1rem">Aucune carte bancaire requise · RGPD conforme · Annulation en 1 clic</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="background:var(--paper);padding-top:4rem">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:0">
+      <div class="section-eyebrow" style="justify-content:center"><span>Questions fréquentes</span></div>
+      <h2 class="display-sm">Ce que vous nous<br>demandez souvent.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q">
+          <h4>Quelles sources GrantHound surveille-t-il exactement ?</h4>
+          <button class="faq-toggle">+</button>
+        </div>
+        <div class="faq-a">MIDAS Wallonie, le portail de la FWB, les cinq provinces wallonnes (Liège, Luxembourg, Namur, Hainaut, Brabant wallon), Bruxelles, le FSE+, le FEDER, les fondations privées (Roi Baudouin, etc.), les communes, l'ONSS et les fonds sectoriels. Au total, plus de 220 sources indexées et actualisées chaque semaine.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h4>Combien de temps avant les premières alertes ?</h4>
+          <button class="faq-toggle">+</button>
+        </div>
+        <div class="faq-a">Une fois votre profil activé (sous 24h après inscription), vous recevez votre première synthèse dès le lundi suivant. En plan Pro et Cabinet, les alertes en temps réel démarrent immédiatement après activation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h4>Puis-je annuler à tout moment ?</h4>
+          <button class="faq-toggle">+</button>
+        </div>
+        <div class="faq-a">Oui, sans frais ni préavis. Un simple email à noahlatour77@gmail.com suffit. Vous conservez l'accès jusqu'à la fin de la période payée.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <h4>Un consultant coûte 500 €/jour. Pourquoi ne pas le faire moi-même ?</h4>
+          <button class="faq-toggle">+</button>
+        </div>
+        <div class="faq-a">La veille manuelle sur 220+ sources représente facilement 4 à 6 heures par semaine. Multipliez par 52 semaines : c'est plus de 200 heures de travail que vous redonnez à vos projets. GrantHound fait ça pour vous, 7j/7, pour moins de 40 centimes par jour.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="container" style="position:relative;z-index:1">
+    <h2>Combien de subsides avez-vous manqués cette année ?</h2>
+    <p>La plupart des ASBL wallonnes passent à côté de milliers d'euros chaque année. Commencez à changer ça aujourd'hui — gratuitement.</p>
+    <a href="#inscription" class="btn btn-void btn-lg">Essayer 14 jours · Sans carte</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">Grant<em>Hound</em></span>
+        <p>L'outil de veille automatique de subsides conçu pour le monde associatif wallon. Simple, fiable, exhaustif.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Produit</h5>
+        <ul>
+          <li><a href="/comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="/tarifs">Tarifs</a></li>
+          <li><a href="/inscription">S'inscrire</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Entreprise</h5>
+        <ul>
+          <li><a href="/a-propos">À propos</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Légal</h5>
+        <ul>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Politique RGPD</a></li>
+          <li><a href="#">CGU</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GrantHound. Tous droits réservés.</span>
+      <span>Made in <a href="/a-propos">Wallonie 🇧🇪</a> · <a href="mailto:noahlatour77@gmail.com">noahlatour77@gmail.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav dark/light based on hero scroll position
+  const nav = document.getElementById('nav');
+  const hero = document.getElementById('hero');
+
+  function updateNav() {
+    const scrolled = window.scrollY > 20;
+    const pastHero = window.scrollY > (hero.offsetHeight - 80);
+    nav.classList.toggle('scrolled', scrolled);
+    if (pastHero) {
+      nav.classList.remove('dark');
+      nav.classList.add('light');
+    } else {
+      nav.classList.remove('light');
+      nav.classList.add('dark');
+    }
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+
+  // Mobile nav toggle
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Pre-select plan from URL query
+  const urlPlan = new URLSearchParams(window.location.search).get('plan');
+  if (urlPlan) {
+    const radio = document.getElementById('plan-' + urlPlan);
+    if (radio) radio.checked = true;
+  }
+</script>
+</body>
+</html>

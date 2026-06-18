@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription — GrantHound</title>
+  <meta name="description" content="Inscrivez-vous à GrantHound. 14 jours gratuits, sans carte bancaire.">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav light scrolled" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L22 22"/></svg>
+        </div>
+        Grant<em>Hound</em>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="/tarifs">Tarifs</a></li>
+        <li><a href="/a-propos">À propos</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/inscription" class="nav-cta">Commencer gratuitement</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="section-eyebrow"><span>Inscription</span></div>
+    <h1 class="display-md">Démarrez votre<br>essai gratuit.</h1>
+    <p class="sub">14 jours offerts, sans carte bancaire. Votre première alerte subside arrive dès lundi.</p>
+  </div>
+</div>
+
+<!-- FORM SECTION -->
+<section class="section form-section">
+  <div class="container">
+
+    <!-- SUCCESS STATE -->
+    <div id="successBlock" style="display:none;max-width:600px;margin:0 auto;text-align:center">
+      <div style="font-size:4rem;margin-bottom:1.5rem">🎉</div>
+      <h2 class="display-sm" style="margin-bottom:.875rem">Inscription confirmée !</h2>
+      <p style="color:var(--ink-2);font-size:1.0625rem;line-height:1.75;margin-bottom:2rem">
+        Nous vous avons envoyé un email de confirmation. Votre compte sera activé sous 24h et vous recevrez votre première alerte subsides dès lundi prochain.
+      </p>
+      <a href="/" class="btn btn-amber btn-lg">Retourner à l'accueil</a>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="errorBlock" style="display:none;max-width:600px;margin:0 auto;text-align:center">
+      <div style="font-size:4rem;margin-bottom:1.5rem">😕</div>
+      <h2 class="display-sm" style="margin-bottom:.875rem">Une erreur s'est produite</h2>
+      <p style="color:var(--ink-2);font-size:1.0625rem;line-height:1.75;margin-bottom:2rem">
+        Veuillez réessayer ou nous contacter directement à <a href="mailto:noahlatour77@gmail.com" style="color:var(--amber)">noahlatour77@gmail.com</a>.
+      </p>
+      <a href="/inscription" class="btn btn-outline btn-lg">Réessayer</a>
+    </div>
+
+    <!-- FORM -->
+    <div id="formBlock" class="form-wrapper">
+      <div class="form-header">
+        <div class="section-eyebrow" style="justify-content:center"><span>Formulaire</span></div>
+        <h2 class="display-sm">Créez votre compte<br>en 2 minutes.</h2>
+        <p>Renseignez les informations ci-dessous. Nous activons votre compte et vous contactons sous 24h.</p>
+      </div>
+
+      <form action="/api/signup" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Votre nom complet</label>
+            <input type="text" id="name" name="name" placeholder="Marie Dupont" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email professionnel</label>
+            <input type="email" id="email" name="email" placeholder="marie@asbl.be" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="asbl">Nom de votre ASBL</label>
+          <input type="text" id="asbl" name="asbl" placeholder="Association culturelle de Namur" required>
+        </div>
+
+        <div class="form-group">
+          <label>Choisissez votre formule</label>
+          <div class="plan-choice-grid">
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-veille" value="veille">
+              <label for="plan-veille">
+                <span class="pr-name">Veille Active</span>
+                <span class="pr-price">19 €/mois</span>
+              </label>
+            </div>
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-pro" value="pro" checked>
+              <label for="plan-pro">
+                <span class="pr-name">Pro ⭐</span>
+                <span class="pr-price">35 €/mois</span>
+              </label>
+            </div>
+            <div class="plan-radio">
+              <input type="radio" name="plan" id="plan-cabinet" value="cabinet">
+              <label for="plan-cabinet">
+                <span class="pr-name">Cabinet</span>
+                <span class="pr-price">89 €/mois</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-amber btn-full btn-lg">
+          Démarrer mon essai 14 jours gratuits
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <p style="text-align:center;font-size:.8rem;color:var(--ink-3);margin-top:1rem">
+          Aucune carte bancaire · RGPD conforme · Annulation en 1 clic
+        </p>
+      </form>
+    </div>
+
+    <!-- Guarantees -->
+    <div style="max-width:680px;margin:3rem auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:center">
+      <div>
+        <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
+        <strong style="font-size:.875rem;display:block;margin-bottom:.2rem">Données sécurisées</strong>
+        <p style="font-size:.8rem;color:var(--ink-2)">Hébergement en Belgique, RGPD conforme</p>
+      </div>
+      <div>
+        <div style="font-size:2rem;margin-bottom:.5rem">⚡</div>
+        <strong style="font-size:.875rem;display:block;margin-bottom:.2rem">Activation rapide</strong>
+        <p style="font-size:.8rem;color:var(--ink-2)">Compte actif sous 24h, alertes dès lundi</p>
+      </div>
+      <div>
+        <div style="font-size:2rem;margin-bottom:.5rem">🤝</div>
+        <strong style="font-size:.875rem;display:block;margin-bottom:.2rem">Support humain</strong>
+        <p style="font-size:.8rem;color:var(--ink-2)">Noah vous répond personnellement sous 24h</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">Grant<em>Hound</em></span>
+        <p>L'outil de veille automatique de subsides conçu pour le monde associatif wallon. Simple, fiable, exhaustif.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Produit</h5>
+        <ul>
+          <li><a href="/comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="/tarifs">Tarifs</a></li>
+          <li><a href="/inscription">S'inscrire</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Entreprise</h5>
+        <ul>
+          <li><a href="/a-propos">À propos</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Légal</h5>
+        <ul>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Politique RGPD</a></li>
+          <li><a href="#">CGU</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GrantHound. Tous droits réservés.</span>
+      <span>Made in <a href="/a-propos">Wallonie 🇧🇪</a> · <a href="mailto:noahlatour77@gmail.com">noahlatour77@gmail.com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Show success/error states from URL query
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('success')) {
+    document.getElementById('successBlock').style.display = 'block';
+    document.getElementById('formBlock').style.display = 'none';
+    document.getElementById('errorBlock').style.display = 'none';
+  } else if (params.has('error')) {
+    document.getElementById('errorBlock').style.display = 'block';
+    document.getElementById('formBlock').style.display = 'none';
+    document.getElementById('successBlock').style.display = 'none';
+  }
+
+  // Pre-select plan from URL query
+  const urlPlan = params.get('plan');
+  if (urlPlan) {
+    const radio = document.getElementById('plan-' + urlPlan);
+    if (radio) radio.checked = true;
+  }
+</script>
+</body>
+</html>
