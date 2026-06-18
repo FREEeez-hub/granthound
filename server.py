@@ -18,7 +18,7 @@ def init_db():
         employes INTEGER, budget_annuel TEXT, annee_creation INTEGER,
         public_cible TEXT, projets TEXT, cofinancement INTEGER DEFAULT 0,
         email TEXT UNIQUE, contact TEXT,
-        date_inscription TEXT DEFAULT (datetime("now")),
+        date_inscription TEXT DEFAULT CURRENT_TIMESTAMP,
         actif INTEGER DEFAULT 1
     )''')
     con.commit(); con.close()
