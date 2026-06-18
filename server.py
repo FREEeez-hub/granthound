@@ -40,7 +40,7 @@ def save_client(data):
     except sqlite3.IntegrityError: return False, 'exists'
     finally: con.close()
 
-def send_email(to, subject, body):
+def _send_email_sync(to, subject, body):
     try:
         msg = MIMEMultipart('alternative')
         msg['Subject'] = subject; msg['From'] = GMAIL_USER; msg['To'] = to
