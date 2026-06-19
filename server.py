@@ -1,4 +1,4 @@
-import os, sqlite3, json, urllib.request, threading
+import os, sqlite3, threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
@@ -6,6 +6,8 @@ PORT = int(os.environ.get('PORT', 10000))
 DB_PATH = 'granthound.db'
 RESEND_API_KEY = "re_SVfMy7i6_HMsxcvfodN8gQhcZTnzpym2L"
 ADMIN_EMAIL = "noahlatour77@gmail.com"
+GMAIL_USER = "noahlatour77@gmail.com"
+GMAIL_PASS = "bvtciemwwxonfcmi"
 
 # ── Database ──────────────────────────────────────────────────────────────────
 
@@ -44,22 +46,17 @@ def save_client(data):
 def send_email(to, subject, html_body):
     def _send():
         try:
-            data = json.dumps({
-                "from": "GrantHound <onboarding@resend.dev>",
-                "to": [to],
-                "subject": subject,
-                "html": html_body
-            }).encode()
-            req = urllib.request.Request(
-                "https://api.resend.com/emails",
-                data=data,
-                headers={
-                    "Authorization": f"Bearer {RESEND_API_KEY}",
-                    "Content-Type": "application/json"
-                },
-                method="POST"
-            )
-            urllib.request.urlopen(req, timeout=15)
+            import smtplib
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = f'GrantHound <{GMAIL_USER}>'
+            msg['To'] = to
+            msg.attach(MIMEText(html_body, 'html', 'utf-8'))
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as s:
+                s.login(GMAIL_USER, GMAIL_PASS)
+                s.sendmail(GMAIL_USER, to, msg.as_string())
             print(f"[EMAIL OK] {to}")
         except Exception as e:
             print(f"[EMAIL ERROR] {e}")
