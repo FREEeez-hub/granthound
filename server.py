@@ -43,31 +43,29 @@ def save_client(data):
 
 # ── Email (Resend REST) ───────────────────────────────────────────────────────
 
+BREVO_SMTP = "smtp-relay.brevo.com"
+BREVO_PORT = 587
+BREVO_LOGIN = "af3e1d001@smtp-brevo.com"
+BREVO_KEY = os.environ.get('BREVO_KEY', '')
+
 def send_email(to, subject, html_body):
-    def _send():
-        try:
-            import json, urllib.request
-            data = json.dumps({
-                "from": "onboarding@resend.dev",
-                "to": [to],
-                "subject": subject,
-                "html": html_body
-            }).encode()
-            req = urllib.request.Request(
-                "https://api.resend.com/emails",
-                data=data,
-                headers={
-                    "Authorization": f"Bearer {RESEND_API_KEY}",
-                    "Content-Type": "application/json"
-                },
-                method="POST"
-            )
-            r = urllib.request.urlopen(req, timeout=15)
-            print(f"[EMAIL OK] {to} — {r.read().decode()}")
-        except Exception as e:
-            print(f"[EMAIL ERROR] {e}")
-    threading.Thread(target=_send, daemon=True).start()
-    
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    try:
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = subject
+        msg['From'] = 'GrantHound <noahlatour77@gmail.com>'
+        msg['To'] = to
+        msg.attach(MIMEText(html_body, 'html', 'utf-8'))
+        with smtplib.SMTP(BREVO_SMTP, BREVO_PORT) as s:
+            s.starttls()
+            s.login(BREVO_LOGIN, BREVO_KEY)
+            s.sendmail(BREVO_LOGIN, to, msg.as_string())
+        print(f"[EMAIL OK] {to}", flush=True)
+    except Exception as e:
+        print(f"[EMAIL ERROR] {e}", flush=True)
+    v
 # ── Shared CSS + JS ───────────────────────────────────────────────────────────
 
 HEAD = '''<meta charset="UTF-8">
